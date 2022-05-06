@@ -26,7 +26,8 @@ function Widget() {
   }
 
   const handleFeedbackReset = () => {
-    setFeedbackType(null)
+    setFeedbackType(null);
+    setFeedbackSent(false);
   }
 
   const handleFeedbackSent = () => {
@@ -50,7 +51,7 @@ function Widget() {
         handleIndicatorStyle={styles.indicator}
       >
         {feedbackSent 
-          ? <Success />
+          ? <Success onSendAnotherFeedback={handleFeedbackReset} />
           : (
             <>
               {!!feedbackType
