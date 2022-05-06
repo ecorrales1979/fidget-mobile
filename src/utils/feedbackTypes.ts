@@ -12,3 +12,5 @@ export const feedbackTypes = {
     image: require("../assets/thought.png"),
   },
 };
+
+export type FeedbackType = keyof typeof feedbackTypes;
