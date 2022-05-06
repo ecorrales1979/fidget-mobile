@@ -60,6 +60,7 @@ export function Form({ feedbackType, onFeedbackReset, onFeedbackSent }: Props) {
         style={styles.input}
         placeholder="Describe your problem here"
         placeholderTextColor={theme.colors.text_secondary}
+        autoCorrect={false}
       />
 
       <View style={styles.footer}>
