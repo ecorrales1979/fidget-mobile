@@ -47,7 +47,7 @@ export function Form({ feedbackType }: Props) {
 
       <View style={styles.footer}>
         <ScreenshotButton
-          screenshot={''}
+          screenshot={'https://avatars.githubusercontent.com/u/52423831'}
           onTakeShot={() => {}}
           onRemoveShot={() => {}}
         />
