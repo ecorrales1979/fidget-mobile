@@ -12,6 +12,7 @@ import { captureScreen } from 'react-native-view-shot'
 import { styles } from './styles';
 import { Button } from '../Button';
 import { ScreenshotButton } from '../ScreenshotButton';
+import { api } from '../../libs/api';
 import { theme } from '../../theme';
 import { FeedbackType, feedbackTypes } from '../../utils/feedbackTypes';
 
@@ -23,6 +24,8 @@ interface Props {
 
 export function Form({ feedbackType, onFeedbackReset, onFeedbackSent }: Props) {
   const [screenshot, setScreenshot] = useState<string | null>(null);
+  const [comment, setComment] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const feedbackTypeInfo = feedbackTypes[feedbackType];
 
   const handleTakeScreenshot = () => {
@@ -36,6 +39,21 @@ export function Form({ feedbackType, onFeedbackReset, onFeedbackSent }: Props) {
 
   const handleRemoveScreenshot = () => {
     setScreenshot(null);
+  }
+
+  const handleSentFeedback = () => {
+    if (isSubmitting) return
+
+    setIsSubmitting(true);
+    api
+      .post('feedbacks', { comment, type: feedbackType, screenshot })
+      .then(() => {
+        onFeedbackSent();
+      })
+      .catch((error) => {
+        console.error(error);
+        setIsSubmitting(false);
+      });
   }
 
   return (
@@ -61,6 +79,7 @@ export function Form({ feedbackType, onFeedbackReset, onFeedbackSent }: Props) {
         placeholder="Describe your problem here"
         placeholderTextColor={theme.colors.text_secondary}
         autoCorrect={false}
+        onChangeText={setComment}
       />
 
       <View style={styles.footer}>
@@ -69,7 +88,11 @@ export function Form({ feedbackType, onFeedbackReset, onFeedbackSent }: Props) {
           onTakeShot={handleTakeScreenshot}
           onRemoveShot={handleRemoveScreenshot}
         />
-        <Button isLoading={false} />
+        <Button
+          isLoading={isSubmitting}
+          onPress={handleSentFeedback}
+          disabled={!comment}
+        />
       </View>
 
     </View>
